@@ -1,0 +1,59 @@
+name: email-reply-env
+version: "1.0.0"
+description: >
+  An OpenEnv environment where an AI agent reads real-world emails
+  and generates appropriate replies. Tasks range from simple welcome
+  emails to complex escalated refund complaints.
+
+author: your-hf-username
+license: MIT
+
+interface:
+  reset:
+    endpoint: /reset
+    method: POST
+    input:
+      task_id:
+        type: string
+        default: task_1_easy
+        description: ID of the task to load
+
+  step:
+    endpoint: /step
+    method: POST
+    input:
+      reply:
+        type: string
+        required: true
+        description: The agent's email reply text
+
+  state:
+    endpoint: /state
+    method: GET
+
+tasks:
+  - id: task_1_easy
+    difficulty: easy
+    description: Reply to a simple welcome email with gratitude and enthusiasm.
+
+  - id: task_2_medium
+    difficulty: medium
+    description: Reply professionally to a delayed order complaint.
+
+  - id: task_3_hard
+    difficulty: hard
+    description: Reply to an escalated refund request with ownership and compensation.
+
+reward:
+  range: [0.0, 1.0]
+  description: >
+    Score is computed by the grader based on tone, relevance,
+    empathy, specific content requirements, and reply length.
+
+additional_endpoints:
+  - /tasks
+  - /grader
+  - /baseline
+
+docker:
+  port: 7860
